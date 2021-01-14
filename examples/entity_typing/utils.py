@@ -75,6 +75,9 @@ def convert_examples_to_features(examples, label_list, tokenizer, max_mention_le
     features = []
     for example in tqdm(examples):
 
+        print("Example:")
+        print(example.text)
+        
         def preprocess_and_tokenize(text, start, end=None):
             target_text = text[start:end]
             for a, b in conv_tables:
@@ -95,6 +98,9 @@ def convert_examples_to_features(examples, label_list, tokenizer, max_mention_le
 
         tokens += preprocess_and_tokenize(example.text, example.span[1])
         tokens.append(tokenizer.sep_token)
+
+        print("Tokens:")
+        print(tokens)
 
         word_ids = tokenizer.convert_tokens_to_ids(tokens)
         word_attention_mask = [1] * len(tokens)
