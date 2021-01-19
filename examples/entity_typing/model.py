@@ -30,6 +30,12 @@ class LukeForEntityTyping(LukeEntityAwareAttentionModel):
         print(word_ids.shape)
         print("Shape of entity_ids:")
         print(entity_ids.shape)
+
+        print("Word_ids:")
+        print(word_ids)
+
+        print("Entity ids:")
+        print(entity_ids)
         
         encoder_outputs = super(LukeForEntityTyping, self).forward(
             word_ids,
@@ -40,6 +46,9 @@ class LukeForEntityTyping(LukeEntityAwareAttentionModel):
             entity_segment_ids,
             entity_attention_mask,
         )
+
+        print("Encoder outputs:")
+        print(encoder_outputs)
 
         feature_vector = encoder_outputs[1][:, 0, :]
         feature_vector = self.dropout(feature_vector)
