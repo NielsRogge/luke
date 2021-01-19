@@ -25,6 +25,12 @@ class LukeForEntityTyping(LukeEntityAwareAttentionModel):
         entity_attention_mask,
         labels=None,
     ):
+        
+        print("Shape of word_ids:")
+        print(word_ids.shape)
+        print("Shape of entity_ids:")
+        print(entity_ids.shape)
+        
         encoder_outputs = super(LukeForEntityTyping, self).forward(
             word_ids,
             word_segment_ids,
