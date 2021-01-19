@@ -62,6 +62,16 @@ def run(common_args, **task_args):
     if args.do_train:
         model = LukeForEntityTyping(args, num_labels)
         model.load_state_dict(args.model_weights, strict=False)
+        
+        # Print model's state_dict
+        print("Model's state_dict:")
+        for param_tensor in model.state_dict():
+            print(param_tensor, "\t", model.state_dict()[param_tensor].size())
+
+
+        print("Entire model:")
+        print(model)
+
         model.to(args.device)
 
         num_train_steps_per_epoch = len(train_dataloader) // args.gradient_accumulation_steps
