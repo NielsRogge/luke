@@ -104,6 +104,9 @@ class LukeModel(nn.Module):
 
         embedding_output = self.embeddings(word_ids, word_segment_ids)
 
+        print("Embedding output:")
+        print(embedding_output[0,:3,:3])
+
         attention_mask = self._compute_extended_attention_mask(word_attention_mask, entity_attention_mask)
         if entity_ids is not None:
             entity_embedding_output = self.entity_embeddings(entity_ids, entity_position_ids, entity_segment_ids)
