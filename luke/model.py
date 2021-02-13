@@ -210,6 +210,13 @@ class LukeEntityAwareAttentionModel(LukeModel):
         entity_embeddings = self.entity_embeddings(entity_ids, entity_position_ids, entity_segment_ids)
         attention_mask = self._compute_extended_attention_mask(word_attention_mask, entity_attention_mask)
 
+        print("Word embeddings:")
+        print(word_embeddings[0,:3,:3])
+        print("Entity embeddings:")
+        print(entity_embeddings[0,:3,:3])
+        print("Attention mask:")
+        print(attention_mask[0,:3])
+        
         return self.encoder(word_embeddings, entity_embeddings, attention_mask)
 
     def load_state_dict(self, state_dict, *args, **kwargs):
