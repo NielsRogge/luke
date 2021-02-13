@@ -342,6 +342,13 @@ class EntityAwareEncoder(nn.Module):
 
     def forward(self, word_hidden_states, entity_hidden_states, attention_mask):
         for idx, layer_module in enumerate(self.layer):
+            
+            print("Word_hidden_states before layer", idx)
+            print(word_hidden_states[0,:3,:3])
+
+            print("Entity_hidden_states before layer", idx)
+            print(entity_hidden_states[0,:3,:3])
+            
             word_hidden_states, entity_hidden_states = layer_module(
                 word_hidden_states, entity_hidden_states, attention_mask
             )
