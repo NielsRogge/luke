@@ -257,6 +257,7 @@ class EntityAwareSelfAttention(nn.Module):
         return x.view(*new_x_shape).permute(0, 2, 1, 3)
 
     def forward(self, word_hidden_states, entity_hidden_states, attention_mask):
+       
         word_size = word_hidden_states.size(1)
 
         w2w_query_layer = self.transpose_for_scores(self.query(word_hidden_states))
@@ -283,6 +284,9 @@ class EntityAwareSelfAttention(nn.Module):
         attention_scores = attention_scores / math.sqrt(self.attention_head_size)
         attention_scores = attention_scores + attention_mask
 
+        print("Attention scores:")
+        print(attention_scores[:3,:3])
+
         attention_probs = F.softmax(attention_scores, dim=-1)
         attention_probs = self.dropout(attention_probs)
 
@@ -294,7 +298,7 @@ class EntityAwareSelfAttention(nn.Module):
         context_layer = context_layer.permute(0, 2, 1, 3).contiguous()
         new_context_layer_shape = context_layer.size()[:-2] + (self.all_head_size,)
         context_layer = context_layer.view(*new_context_layer_shape)
-
+        
         return context_layer[:, :word_size, :], context_layer[:, word_size:, :]
 
 
@@ -337,8 +341,15 @@ class EntityAwareEncoder(nn.Module):
         self.layer = nn.ModuleList([EntityAwareLayer(config) for _ in range(config.num_hidden_layers)])
 
     def forward(self, word_hidden_states, entity_hidden_states, attention_mask):
-        for layer_module in self.layer:
+        for idx, layer_module in enumerate(self.layer):
             word_hidden_states, entity_hidden_states = layer_module(
                 word_hidden_states, entity_hidden_states, attention_mask
             )
+
+            print("Word_hidden_states after layer", idx)
+            print(word_hidden_states[0,:3,:3])
+
+            print("Entity_hidden_states after layer", idx)
+            print(entity_hidden_states[0,:3,:3])
+
         return word_hidden_states, entity_hidden_states
